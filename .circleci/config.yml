@@ -16,6 +16,19 @@ jobs:
       - image: 'circleci/node:10'
     steps:
       - run: echo "build:hello"
+      - run: 
+         command: |
+            URL="https://circleci.com/api/v2/workflow/${CIRCLE_WORKFLOW_ID}"
+            curl $URL >>  /tmp/workflow.json
+            cat /tmp/workflow.json
+
+            URL="https://circleci.com/api/v2/project/gh/rharibhakti/springboot-test"
+            curl $URL >>  /tmp/project.json
+            cat /tmp/project.json
+
+            URL="https://circleci.com/api/v2/project/gh/rharibhakti/springboot-test/job/${CIRCLE_WORKFLOW_JOB_ID}"
+            curl $URL >>  /tmp/job.json
+            cat /tmp/job.json
   deploy:
     docker:
       - image: 'circleci/node:10'
