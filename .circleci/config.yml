@@ -17,6 +17,7 @@ jobs:
     steps:
       - run: echo "build:hello"
       - run: 
+         name: curl test verbose 
          command: |
             URL="https://circleci.com/api/v2/workflow/${CIRCLE_WORKFLOW_ID}"
             curl $URL >>  /tmp/workflow.json
@@ -26,7 +27,7 @@ jobs:
             curl $URL >>  /tmp/project.json
             cat /tmp/project.json
 
-            URL="https://circleci.com/api/v2/project/gh/rharibhakti/springboot-test/job/${CIRCLE_WORKFLOW_JOB_ID}"
+            URL="https://circleci.com/api/v2/project/gh/rharibhakti/springboot-test/job/${CIRCLE_BUILD_NUM}"
             curl $URL >>  /tmp/job.json
             cat /tmp/job.json
   deploy:
