@@ -10,6 +10,15 @@ jobs:
     docker:
       - image: 'circleci/node:10'
     steps:
+      - run:
+         command: echo 'hello finish'
+         when: on_success
+
+       
+  test:
+    docker:
+      - image: 'circleci/node:10'
+    steps:
       - run: echo "test:hello"
   build:
     docker:
