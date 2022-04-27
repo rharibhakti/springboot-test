@@ -54,22 +54,22 @@ workflows:
   # say-hello-workflow:
   #   jobs:
   #     - say-hello
-  build-deploy-workflow:
-    jobs:
-      - build:
-         context: compass-integration
-         post-steps:
-           - compass/notify
-      - test:
-         context: compass-integration
-         post-steps:
-           - compass/notify
-      - deploy:
-         requires:
-           - build
-         context: compass-integration
-         post-steps:
-           - compass/notify
+  # build-deploy-workflow:
+  #   jobs:
+  #     - build:
+  #        context: compass-integration
+  #        post-steps:
+  #          - compass/notify
+  #     - test:
+  #        context: compass-integration
+  #        post-steps:
+  #          - compass/notify
+  #     - deploy:
+  #        requires:
+  #          - build
+  #        context: compass-integration
+  #        post-steps:
+  #          - compass/notify
   build-workflow:
     jobs:
       - build:
