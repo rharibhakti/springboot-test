@@ -64,8 +64,13 @@ workflows:
     jobs:
       - build:
          context: compass-integration
+         post-steps:
+           - compass/notify
+    
       - test:
          context: compass-integration
+         post-steps:
+           - compass/notify
       - deploy:
          requires:
            - build
@@ -74,13 +79,13 @@ workflows:
            - compass/notify:
               job_type: 'deployment'
               environment_type: 'production'
-      - notify:
-         requires:
-           - build
-           - test
-         context: compass-integration
-         post-steps:
-            - compass/notify
+      # - notify:
+      #    requires:
+      #      - build
+      #      - test
+      #    context: compass-integration
+      #    post-steps:
+      #       - compass/notify
   # build-workflow:
   #   jobs:
   #     - build:
