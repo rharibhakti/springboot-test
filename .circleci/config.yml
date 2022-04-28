@@ -11,6 +11,11 @@ jobs:
       - image: 'circleci/node:10'
     steps:
       - run: echo "test:hello"
+  notify:
+    docker:
+      - image: 'circieci/node:10'
+    steps:
+      - run: echo "notify compass"
   build:
     docker:
       - image: 'circleci/node:10'
@@ -54,25 +59,30 @@ workflows:
   # say-hello-workflow:
   #   jobs:
   #     - say-hello
-  # build-deploy-workflow:
-  #   jobs:
-  #     - build:
-  #        context: compass-integration
-  #        post-steps:
-  #          - compass/notify
-  #     - test:
-  #        context: compass-integration
-  #        post-steps:
-  #          - compass/notify
-  #     - deploy:
-  #        requires:
-  #          - build
-  #        context: compass-integration
-  #        post-steps:
-  #          - compass/notify
-  build-workflow:
+  build-deploy-workflow:
     jobs:
       - build:
          context: compass-integration
+      - test:
+         context: compass-integration
+      - deploy:
+         requires:
+           - build
+         context: compass-integration
          post-steps:
            - compass/notify
+      - notify:
+         requires:
+           - build
+           - test
+         post-steps:
+            - compass/notify
+  # build-workflow:
+  #   jobs:
+  #     - build:
+  #        context: compass-integration
+  #     - notify:
+  #        requires:
+  #          - build
+  #        post-steps:
+  #          - compass/notify
