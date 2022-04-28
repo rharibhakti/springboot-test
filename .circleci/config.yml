@@ -70,7 +70,9 @@ workflows:
            - build
          context: compass-integration
          post-steps:
-           - compass/notify
+           - compass/notify:
+              job_type: 'deployment'
+              environment_type: 'production'
       - notify:
          requires:
            - build
