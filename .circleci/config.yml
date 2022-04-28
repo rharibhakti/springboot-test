@@ -13,7 +13,7 @@ jobs:
       - run: echo "test:hello"
   notify:
     docker:
-      - image: 'circieci/node:10'
+      - image: 'circleci/node:10'
     steps:
       - run: echo "notify compass"
   build:
@@ -75,6 +75,7 @@ workflows:
          requires:
            - build
            - test
+         context: compass-integration
          post-steps:
             - compass/notify
   # build-workflow:
