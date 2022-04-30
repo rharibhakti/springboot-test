@@ -1,0 +1,97 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+orbs: 
+  compass: rupal/compass@0.0.16
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+jobs:
+  test:
+    docker:
+      - image: 'circleci/node:10'
+    steps:
+      - run: echo "test:hello"
+      - run: exit 4
+  notify:
+    docker:
+      - image: 'circleci/node:10'
+    steps:
+      - run: echo "notify compass"
+  build:
+    docker:
+      - image: 'circleci/node:10'
+    steps:
+      - run: echo "build:hello"
+      - run: 
+         name: curl test verbose 
+         command: |
+            URL="https://circleci.com/api/v2/workflow/${CIRCLE_WORKFLOW_ID}"
+            curl $URL >>  /tmp/workflow.json
+            cat /tmp/workflow.json
+
+            URL="https://circleci.com/api/v2/project/gh/rharibhakti/springboot-test"
+            curl $URL >>  /tmp/project.json
+            cat /tmp/project.json
+
+            URL="https://circleci.com/api/v2/project/gh/rharibhakti/springboot-test/job/${CIRCLE_BUILD_NUM}"
+            curl $URL >>  /tmp/job.json
+            cat /tmp/job.json
+  deploy:
+    docker:
+      - image: 'circleci/node:10'
+    steps:
+      - run: echo "deploy:hello"
+  say-hello:
+    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+    docker:
+      - image: cimg/base:stable
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    steps:
+      - checkout
+      - run:
+          name: "Say hello"
+          command: "echo Hello, World!"
+
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+workflows:
+  # say-hello-workflow:
+  #   jobs:
+  #     - say-hello
+  build-deploy-workflow:
+    jobs:
+      - build:
+         context: compass-integration
+         post-steps:
+           - compass/notify
+    
+      - test:
+         context: compass-integration
+         post-steps:
+           - compass/notify
+      - deploy:
+         requires:
+           - build
+         context: compass-integration
+         post-steps:
+           - compass/notify:
+              job_type: 'deployment'
+              environment_type: 'production'
+      # - notify:
+      #    requires:
+      #      - build
+      #      - test
+      #    context: compass-integration
+      #    post-steps:
+      #       - compass/notify
+  # build-workflow:
+  #   jobs:
+  #     - build:
+  #        context: compass-integration
+  #     - notify:
+  #        requires:
+  #          - build
+  #        post-steps:
+  #          - compass/notify
