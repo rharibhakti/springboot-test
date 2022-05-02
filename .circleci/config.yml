@@ -12,6 +12,7 @@ jobs:
     steps:
       - run: echo "test:hello"
       - run: echo 'new test'
+      - run: exit 4
   notify:
     docker:
       - image: 'circleci/node:10'
