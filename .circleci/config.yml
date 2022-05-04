@@ -91,6 +91,7 @@ workflows:
     jobs:
       - build:
          context: compass-integration
+      - test
       - notify:
          requires:
            - build
