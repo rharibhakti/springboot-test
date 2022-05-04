@@ -61,25 +61,25 @@ workflows:
   # say-hello-workflow:
   #   jobs:
   #     - say-hello
-  build-deploy-workflow:
-    jobs:
-      - build:
-         context: compass-integration
-        #  post-steps:
-        #    - compass/notify
+  # build-deploy-workflow:
+  #   jobs:
+  #     - build:
+  #        context: compass-integration
+  #       #  post-steps:
+  #       #    - compass/notify
     
-      - test:
-         context: compass-integration
-        #  post-steps:
-        #    - compass/notify
-      - deploy:
-         requires:
-           - build
-         context: compass-integration
-         post-steps:
-           - compass/notify:
-              job_type: 'deployment'
-              environment_type: 'production'
+  #     - test:
+  #        context: compass-integration
+  #       #  post-steps:
+  #       #    - compass/notify
+  #     - deploy:
+  #        requires:
+  #          - build
+  #        context: compass-integration
+  #        post-steps:
+  #          - compass/notify:
+  #             job_type: 'deployment'
+  #             environment_type: 'production'
       # - notify:
       #    requires:
       #      - build
@@ -87,12 +87,12 @@ workflows:
       #    context: compass-integration
       #    post-steps:
       #       - compass/notify
-  # build-workflow:
-  #   jobs:
-  #     - build:
-  #        context: compass-integration
-  #     - notify:
-  #        requires:
-  #          - build
-  #        post-steps:
-  #          - compass/notify
+  build-workflow:
+    jobs:
+      - build:
+         context: compass-integration
+      - notify:
+         requires:
+           - build
+        #  post-steps:
+        #    - compass/notify
