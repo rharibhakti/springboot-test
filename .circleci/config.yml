@@ -75,6 +75,7 @@ workflows:
       - deploy:
          requires:
            - build
+           - test
          context: compass-integration
          post-steps:
            - compass/notify:
