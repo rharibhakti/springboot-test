@@ -90,11 +90,11 @@ workflows:
       #       - compass/notify
   build-workflow:
     jobs:
-      - build:
-         context: compass-integration
+      - build
       - test
       - notify:
          requires:
            - build
+           - test
         #  post-steps:
         #    - compass/notify
