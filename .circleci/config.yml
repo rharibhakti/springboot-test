@@ -17,7 +17,6 @@ jobs:
       - image: 'circleci/node:10'
     steps:
       - run: echo "notify compass"
-      - run: exit 4
   build:
     docker:
       - image: 'circleci/node:10'
