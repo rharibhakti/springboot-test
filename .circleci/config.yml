@@ -2,7 +2,7 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 orbs: 
-  compass: rupal/compass@0.0.26
+  compass: rupal/compass@0.0.27
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
@@ -62,24 +62,23 @@ workflows:
   #     - say-hello
   build-deploy-workflow:
     jobs:
-      - build:
-         context: compass-integration
+      - build
+         
         #  post-steps:
         #    - compass/notify
     
-      - test:
-         context: compass-integration
+      - test
+         
         #  post-steps:
         #    - compass/notify
       - deploy:
          requires:
            - build
            - test
-         context: compass-integration
+         context: compass-integration-yoda100
          post-steps:
-           - compass/notify:
-              job_type: 'deployment'
-              environment_type: 'production'
+           - compass/notify_deployment:
+              environment_type: production
       # - notify:
       #    requires:
       #      - build
